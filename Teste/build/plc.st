@@ -1,12 +1,35 @@
+TYPE
+  LOGLEVEL : (CRITICAL, WARNING, INFO, DEBUG) := INFO;
+END_TYPE
+
+FUNCTION_BLOCK LOGGER
+  VAR_INPUT
+    TRIG : BOOL;
+    MSG : STRING;
+    LEVEL : LOGLEVEL := INFO;
+  END_VAR
+  VAR
+    TRIG0 : BOOL;
+  END_VAR
+
+  IF TRIG AND NOT TRIG0 THEN
+  {{
+   LogMessage(GetFbVar(LEVEL),(char*)GetFbVar(MSG, .body),GetFbVar(MSG, .len));
+  }}
+  END_IF;
+  TRIG0:=TRIG;
+END_FUNCTION_BLOCK
+
+
 PROGRAM AWS
   VAR
-    SP AT %IW0 : UINT := 100;
-    PV AT %QW0 : UINT;
-    CV AT %IW1 : UINT;
-    ITERM AT %QW1 : REAL;
-    error AT %QW2 : REAL;
-    KP AT %IW2 : UINT := 3;
-    KI AT %IW3 : UINT := 1;
+    SP AT %QW0 : UINT;
+    PV AT %IW0 : UINT;
+    CV AT %QW1 : UINT;
+    ITERM AT %QD1 : REAL;
+    error AT %QD2 : REAL;
+    KP AT %QW2 : UINT;
+    KI AT %QW3 : UINT;
     R1 AT %IW4 : BOOL;
   END_VAR
   VAR

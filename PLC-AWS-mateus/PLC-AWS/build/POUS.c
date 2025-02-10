@@ -42,13 +42,13 @@ __end:
 
 
 void AWS_init__(AWS *data__, BOOL retain) {
-  __INIT_VAR(data__->SP,100,retain)
+  __INIT_VAR(data__->SP,0,retain)
   __INIT_VAR(data__->PV,0,retain)
   __INIT_VAR(data__->CV,0,retain)
   __INIT_VAR(data__->ITERM,0,retain)
   __INIT_VAR(data__->ERROR,0,retain)
-  __INIT_VAR(data__->KP,3,retain)
-  __INIT_VAR(data__->KI,1,retain)
+  __INIT_VAR(data__->KP,0,retain)
+  __INIT_VAR(data__->KI,0,retain)
   __INIT_VAR(data__->R1,__BOOL_LITERAL(FALSE),retain)
   INTEGRAL_init__(&data__->INTEGRAL0,retain);
   __INIT_VAR(data__->_TMP_UINT_TO_REAL5_OUT,0,retain)

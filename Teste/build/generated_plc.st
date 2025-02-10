@@ -1,12 +1,12 @@
 PROGRAM AWS
   VAR
-    SP AT %IW0 : UINT := 100;
-    PV AT %QW0 : UINT;
-    CV AT %IW1 : UINT;
-    ITERM AT %QW1 : REAL;
-    error AT %QW2 : REAL;
-    KP AT %IW2 : UINT := 3;
-    KI AT %IW3 : UINT := 1;
+    SP AT %QW0 : UINT;
+    PV AT %IW0 : UINT;
+    CV AT %QW1 : UINT;
+    ITERM AT %QD1 : REAL;
+    error AT %QD2 : REAL;
+    KP AT %QW2 : UINT;
+    KI AT %QW3 : UINT;
     R1 AT %IW4 : BOOL;
   END_VAR
   VAR

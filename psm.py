@@ -43,14 +43,14 @@ def hardware_init():
     
     global atuador_socket
     global sensor_socket
-    conn_atu = atuador_socket.connect((host, port_atuador))
-    conn_sen = sensor_socket.connect((host, port_sensor))
+    client_socket_sensor = atuador_socket.connect((host, port_atuador))
+    client_socket_atuador = sensor_socket.connect((host, port_sensor))
     psm.start()
 
     #Insert your hardware initialization code in here
-    client_socket_sensor.connect(host, port_sensor))
+    client_socket_sensor.connect(host, port_sensor)
     psm.start()
-    client_socket_sensor.connect(host, port_atuador))
+    client_socket_atuador.connect(host, port_atuador)
     psm.start()
 
 def update_inputs():

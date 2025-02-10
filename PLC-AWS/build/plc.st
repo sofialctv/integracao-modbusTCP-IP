@@ -23,14 +23,14 @@ END_FUNCTION_BLOCK
 
 PROGRAM AWS
   VAR
-    SP AT %QW0 : UINT;
-    PV AT %IW0 : UINT;
-    CV AT %QW1 : UINT;
-    ITERM AT %QD1 : REAL;
-    error AT %QD2 : REAL;
-    KP AT %QW2 : UINT;
-    KI AT %QW3 : UINT;
-    R1 AT %IX4 : BOOL;
+    SP : UINT := 100;
+    PV : UINT;
+    CV : UINT;
+    ITERM : REAL;
+    error : REAL;
+    KP : UINT := 3;
+    KI : UINT := 1;
+    R1 : BOOL;
   END_VAR
   VAR
     INTEGRAL0 : INTEGRAL;
