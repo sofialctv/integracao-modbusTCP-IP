@@ -29,21 +29,23 @@ import time
 import socket
 
 #global variables
-counter = 0
-var_state = False
+host = "172.31.19.88"              # Host IP Privado da Planta
+port_atuador = 1515
+port_sensor = 1516
 
-host = 
-client_socket_sensor = socket.socket()
-client_socket_atuador = socket.socket()
+var_controle = 0                   # Variável Output 
+var_processo = 0                   # Variável Input
 
+atuador_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sensor_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 def hardware_init():
     
-    global host
-    global client_socket_sensor
-    global client_socket_atuador
-    global 
-    glob
+    global atuador_socket
+    global sensor_socket
+    conn_atu = atuador_socket.connect((host, port_atuador))
+    conn_sen = sensor_socket.connect((host, port_sensor))
+    psm.start()
 
     #Insert your hardware initialization code in here
     client_socket_sensor.connect(host, port_sensor))
@@ -52,28 +54,22 @@ def hardware_init():
     psm.start()
 
 def update_inputs():
-    #place here your code to update inputs
+    global sensor_socket
+    global var_processo
+    data = sensor_socket.recv(1024)
+    var_processo = data.decode()
     
-    data = client_socket_sensor.recv(1024).decode()
-    psm.set_var("IW0", data)
+    psm.set_var("IW0", int(var_processo))
 
-    counter += 1
-    if (counter == 10):
-        counter = 0
-        var_state = not var_state
-    
 def update_outputs():
-    #place here your code to work on outputs
-    a = psm.get_var("QX0.0")
-    if a == True:
-        print("QX0.0 is true")
-
+    global var_controle
+    var_controle = psm.get_var("QW0")
+    atuador_socket.sendall(str(var_controle).encode())
 
 if __name__ == "__main__":
     hardware_init()
     while (not psm.should_quit()):
-        update_inputs()
         update_outputs()
-        time.sleep(0.1) #You can adjust the psm cycle time here
+        update_inputs()
+        time.sleep(0.1)
     psm.stop()
-

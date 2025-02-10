@@ -1,12 +1,15 @@
 ## VMs
 i-04b9d8b523d279487 (clp)
-PublicIPs: 52.71.111.185    PrivateIPs: 172.31.21.38    
+PublicIPs: 52.71.111.185    
+PrivateIPs: 172.31.21.38    
 
 i-08ce137d73f9f21e4 (planta)
-PublicIPs: 18.215.174.216   PrivateIPs: 172.31.19.88   
+PublicIPs: 98.81.181.162   
+PrivateIPs: 172.31.19.88   
 
 i-017485dd5dc797090 (supervisorio)
-PublicIPs: 98.85.204.87    PrivateIPs: 172.31.19.23    
+PublicIPs: 98.85.204.87    
+PrivateIPs: 172.31.19.23    
 
 --- 
 ### Guia para rodar o OpenCLP Runtime
@@ -25,6 +28,11 @@ login user and password openplc
 
 > o tempo de request do supervisorio deve ser igual ou maior o tempo de varredura do clp
 
+### Guia para rodar MangoOS7. Inicializar o Mango
+
+sudo systemctl enable mango
+sudo systemctl start mango
+sudo systemctl status mango
 
 No Modbus TCP/IP o slave id é comumente ignorado já que o endereço do dispositivo é dado por seu endereço IP
 https://autonomylogic.com/docs/2-5-modbus-addressing/
