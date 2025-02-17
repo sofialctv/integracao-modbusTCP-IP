@@ -71,6 +71,7 @@ Por isso, foram configurados **IPs estáticos** (também conhecidos como Elastic
 Fazendo uso do OpenPLC Editor, foi implementada em **ladder** uma planta industrial simulada (veja o projeto no diretório [openplc-editor](./openplc-editor/)).
 
 ![alt text](/img/planta-ladder.png)
+*Planta ladder feita via OpenPLC Editor.*
 
 O detalhe mais importante a ser observado é o campo `Localização`, que é fundamental para definir o endereçamento das variáveis utilizadas no programa ladder. Esse campo especifica onde a variável está localizada na memória do PLC, e o endereçamento segue o padrão Modbus.
 
@@ -84,30 +85,29 @@ O protocolo Modbus utiliza um esquema de endereçamento que permite acessar dife
 
 Com apoio da [tabela de endereçamento Modbus](https://autonomylogic.com/docs/2-5-modbus-addressing/), o campo `Localização` foi preenchido para mapear variáveis remotas que serão utilizadas no sistema supervisório para interação.
 
-# Node Red - Planta Virtual
+## OpenPLC Runtime
+Configurada a planta e gerado o arquivo `.st` da mesma ([planta-ladder.st](/openplc-runtime/planta-ladder.st)), configuramos o script PSM.
 
+### PSM: Python SoftPLC Module
+A PSM é uma biblioteca Python usada para simular ou controlar um SoftPLC (um PLC implementado em software), que permite que você interaja com variáveis de um sistema de controle, como entradas e saídas digitais/analógicas, memórias, etc., de forma programática. Veja o script desenvolvido em [psm.py](/openplc-runtime/psm.py).
 
+# Node Red: Planta Virtual
+Partindo agora para o Node-RED, o [fluxo](/node-red/flows.json) simula um sistema de controle de processos, no qual há comunicação entre um atuador, uma planta (processo controlado) e um sensor, utilizando a infraestrutura de comunicação TCP para enviar e receber dados. 
 
-```
-## Implementação do Sistema Supervisório
-- **Instalação e Configuração**: Passos para instalar e configurar o sistema supervisório escolhido.
-  
-- **Interface Homem-Máquina (IHM)**: Descrição da IHM desenvolvida, incluindo botões de comando e visualização de variáveis de processo.
+![alt text](/node-red/flow.png)
+*Fluxo no Node-RED.*
 
+Os nós `tcp in` e `tcp `
 
-## Simulação da Planta Virtual no Node-RED
-- **Nodos**: Descrição dos nodos implementados no Node-RED (atuador, sensor, planta).
-- **Simulação de Processos**: Explicação de como as variáveis de processo são simuladas e integradas ao sistema.
+# MangoOS: Supervisório
 
-## Testes e Validação
-- **Testes de Comunicação**: Descrição dos testes realizados para validar a comunicação Modbus TCP/IP entre as máquinas virtuais.
-- **Resultados**: Apresentação dos resultados obtidos, incluindo capturas de tela da IHM e logs de comunicação.
+# Resultados
 
 ### Conclusão
 - **Aprendizados**: Reflexões sobre o que foi aprendido durante a implementação do projeto.
 
 - **Melhorias Futuras**: Sugestões para melhorias e expansões futuras do ambiente de testes.
-```
+
 
 
 ### Referências
