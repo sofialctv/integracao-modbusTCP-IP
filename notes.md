@@ -4,7 +4,7 @@ PublicIPs: 52.71.111.185
 PrivateIPs: 172.31.21.38    
 
 i-08ce137d73f9f21e4 (planta)
-PublicIPs: 98.81.181.162   
+PublicIPs: 107.23.180.254   
 PrivateIPs: 172.31.19.88   
 
 i-017485dd5dc797090 (supervisorio)
@@ -16,6 +16,10 @@ PrivateIPs: 172.31.19.23
 sudo systemctl start openplc
 acesse em http://52.71.111.185:8080/login
 login user and password openplc
+
+### node-red
+sudo npm install -g --unsafe-perm node-red
+node-red
 
 > OpenCLP Editor foi instalado diretamente no Windows
 > falar sobre mudança da senha do openplc e tb das VMs como melhoria

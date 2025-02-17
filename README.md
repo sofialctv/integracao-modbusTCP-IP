@@ -65,31 +65,41 @@ No contexto deste projeto, a utilização de IPs dinâmicos poderia causar falha
 
 Por isso, foram configurados **IPs estáticos** (também conhecidos como Elastic IPs na AWS) para cada uma das instâncias EC2. Um Elastic IP é um endereço IP público *fixo* que garante que o endereço IP não mude mesmo após reinicializações ou interrupções das VMs.
 
+![alt text](./img/endereços-ip-instancias.png)
+
+# OpenPLC: CLP Virtual
+Fazendo uso do OpenPLC Editor, foi implementada em **ladder** uma planta industrial simulada (veja o projeto no diretório [openplc-editor](./openplc-editor/)).
+
+![alt text](/img/planta-ladder.png)
+
+O detalhe mais importante a ser observado é o campo `Localização`, que é fundamental para definir o endereçamento das variáveis utilizadas no programa ladder. Esse campo especifica onde a variável está localizada na memória do PLC, e o endereçamento segue o padrão Modbus.
+
+## Endereçamento Modbus
+O protocolo Modbus utiliza um esquema de endereçamento que permite acessar diferentes tipos de registros, entre eles:
+
+- **Coils (Discretas de Saída)**, que são usados para variáveis booleanas de saída.
+- **Discrete Inputs (Entradas Discretas)**, que são usados para variáveis booleanas de entrada.
+- **Holding Registers (Registradores de Manutenção)**, que são usados para variáveis do tipo inteiro (16 bits) ou float (32 bits).
+- **Input Registers (Registradores de Entrada)**, que são usados para variáveis de entrada do tipo inteiro ou float.
+
+Com apoio da [tabela de endereçamento Modbus](https://autonomylogic.com/docs/2-5-modbus-addressing/), o campo `Localização` foi preenchido para mapear variáveis remotas que serão utilizadas no sistema supervisório para interação.
+
+# Node Red - Planta Virtual
 
 
-PublicIPs: 52.71.111.185    PrivateIPs: 172.31.21.38    
-
-i-08ce137d73f9f21e4 (planta)
-PublicIPs: 52.90.158.124    PrivateIPs: 172.31.19.88   
-
-i-017485dd5dc797090 (supervisorio)
-PublicIPs: 98.85.204.87    PrivateIPs: 172.31.19.23
 
 ```
-### Implementação do Sistema Supervisório
+## Implementação do Sistema Supervisório
 - **Instalação e Configuração**: Passos para instalar e configurar o sistema supervisório escolhido.
   
 - **Interface Homem-Máquina (IHM)**: Descrição da IHM desenvolvida, incluindo botões de comando e visualização de variáveis de processo.
 
-### Programação do CLP Virtual
-- **Lógica Ladder**: Explicação da lógica ladder implementada no OpenPLC, incluindo o controle PID.
-- **Comunicação**: Detalhes sobre a comunicação entre o OpenPLC e o Node-RED, utilizando Modbus TCP/IP ou Sockets TCP.
 
-### Simulação da Planta Virtual no Node-RED
+## Simulação da Planta Virtual no Node-RED
 - **Nodos**: Descrição dos nodos implementados no Node-RED (atuador, sensor, planta).
 - **Simulação de Processos**: Explicação de como as variáveis de processo são simuladas e integradas ao sistema.
 
-### Testes e Validação
+## Testes e Validação
 - **Testes de Comunicação**: Descrição dos testes realizados para validar a comunicação Modbus TCP/IP entre as máquinas virtuais.
 - **Resultados**: Apresentação dos resultados obtidos, incluindo capturas de tela da IHM e logs de comunicação.
 
@@ -98,6 +108,7 @@ PublicIPs: 98.85.204.87    PrivateIPs: 172.31.19.23
 
 - **Melhorias Futuras**: Sugestões para melhorias e expansões futuras do ambiente de testes.
 ```
+
 
 ### Referências
 1. https://www.wevolver.com/article/modbus-tcp-ip#modbus-tcp/ip:-basic-concepts-and-principles
