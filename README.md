@@ -3,7 +3,7 @@
 *Trabalho Prático II da disciplina de Redes para Controle e Automação [2024/2], ministrada pelo professor [Rafael Emerick Zape de Oliveira](https://github.com/rafaelrezo).*
 **O presente trabalho é de autoria intregal da aluna [Sofia de Alcantara](https://github.com/sofialctv)**.
 
-![alt text](<./img/Industrial Networking Automation.avif>)
+![Ilustração.](/img/capa.avif)
 
 # Introdução
 O objetivo desse trabalho se dá por implementar a integração de três diferentes plataformas (sistema supervisório, sistema de controle e a planta virtual), visando a disponibilização de um ambiente de testes para supervisão Modbus TCP/IP.
@@ -65,13 +65,11 @@ No contexto deste projeto, a utilização de IPs dinâmicos poderia causar falha
 
 Por isso, foram configurados **IPs estáticos** (também conhecidos como Elastic IPs na AWS) para cada uma das instâncias EC2. Um Elastic IP é um endereço IP público *fixo* que garante que o endereço IP não mude mesmo após reinicializações ou interrupções das VMs.
 
-![alt text](./img/endereços-ip-instancias.png)
-
 # OpenPLC: CLP Virtual
 Fazendo uso do OpenPLC Editor, foi implementada em **ladder** uma planta industrial simulada (veja o projeto no diretório [openplc-editor](./openplc-editor/)).
 
-![alt text](/img/planta-ladder.png)
-*Planta ladder feita via OpenPLC Editor.*
+![Planta ladder feita via OpenPLC Editor.](/img/planta-ladder.png)
+*Figura 1: Planta ladder feita via OpenPLC Editor.*
 
 O detalhe mais importante a ser observado é o campo `Localização`, que é fundamental para definir o endereçamento das variáveis utilizadas no programa ladder. Esse campo especifica onde a variável está localizada na memória do PLC, e o endereçamento segue o padrão Modbus.
 
@@ -94,21 +92,50 @@ A PSM é uma biblioteca Python usada para simular ou controlar um SoftPLC (um PL
 # Node Red: Planta Virtual
 Partindo agora para o Node-RED, o [fluxo](/node-red/flows.json) simula um sistema de controle de processos, no qual há comunicação entre um atuador, uma planta (processo controlado) e um sensor, utilizando a infraestrutura de comunicação TCP para enviar e receber dados. 
 
-![alt text](/node-red/flow.png)
-*Fluxo no Node-RED.*
+![ Fluxo no Node-RED.](/img/flow.png)
+*Figura 2: Fluxo no Node-RED.*
 
-Os nós `tcp in` e `tcp `
+A simulação utiliza comunicação TCP em dois pontos:
+- **Entrada (TCP 1515)**: Recebe o erro ou valor de controle externo.
+- **Saída (TCP 1516)**: Envia a variável de processo (PV) medida de volta para outros sistemas ou supervisores.
 
 # MangoOS: Supervisório
 
+No sistema supervisório, foi configurada uma fonte de dados (**data source**) utilizando o PLC como host, e o **endereço IP privado** do PLC foi especificado para estabelecer a conexão. O uso de um IP privado é possível porque as máquinas que hospedam o MangoOS e o OpenPLC estão na **mesma rede local**, na AWS.
+
+![Painel mostrando os data points configurados no MangoOS, com base nas variáveis remotas do PLC virtual.](img/mango-data-points.png)
+*Figura 3: Painel mostrando os data points configurados no MangoOS, com base nas variáveis remotas do PLC virtual.*
+
+Após a conexão com o PLC ser estabelecida, o próximo passo foi configurar os **data points** no MangoOS. Para isso, foi necessário associar as posições das variáveis no programa ladder do PLC aos respectivos **register ranges** e **offsets** no supervisório, garantindo que as variáveis do PLC virtual fossem corretamente monitoradas e controladas pelo MangoOS.
+
 # Resultados
 
-### Conclusão
-- **Aprendizados**: Reflexões sobre o que foi aprendido durante a implementação do projeto.
+O sistema integrado foi capaz de executar o controle e supervisão do processo industrial simulado de maneira eficaz. A planta virtual, desenvolvida no **Node-RED**, recebeu comandos do controlador implementado no **OpenPLC** e enviou de volta os dados de processo monitorados pelo **MangoOS**.
 
-- **Melhorias Futuras**: Sugestões para melhorias e expansões futuras do ambiente de testes.
+![alt text](img/running.gif)
+*GIF demonstrando funcionamento dos sistemas integrados.*
+
+No GIF acima, observamos a interação entre as três plataformas:
+
+1. **Node-RED**: Visualizamos o fluxo do processo de controle, onde o atuador ajusta a planta com base no valor de controle (CV) e a planta responde, retornando a variável de processo (PV) medida pelo sensor. Esse feedback é enviado para o sistema supervisório para ser monitorado.
+
+2. **OpenPLC**: Na aba de monitoramento do **OpenPLC Runtime**, é possível observar os valores atualizados de parâmetros como Setpoint (SP), Processo (PV) e Controle (CV), juntamente com a visualização do comportamento dinâmico do sistema, conforme os valores de controle são ajustados.
+
+3. **MangoOS**: No sistema supervisório, temos uma visualização gráfica do nível da planta simulada, representando visualmente a variável de processo (PV). O gráfico à direita da tela mostra a resposta temporal da planta, permitindo o acompanhamento em tempo real das mudanças no sistema.
 
 
+# Conclusão
+O trabalho desenvolvido demonstra a eficácia da combinação de diferentes ferramentas de automação para simular um ambiente de controle industrial, permitindo realizar testes e análises em tempo real. O uso do protocolo **Modbus TCP/IP** foi essencial para a comunicação fluida entre as plataformas, possibilitando uma supervisão e controle remotos de uma planta industrial virtual.
+
+## Melhorias
+
+Apesar do sucesso na execução do sistema, algumas melhorias podem ser implementadas para aumentar a robustez e eficiência da solução, entre elas estão:
+
+- **Aprimoramento da Segurança com Firewall e Grupos de Segurança,** permitindo tráfego desnecessário de portas que não estão sendo utilizadas. O ideal seria restringir as portas de comunicação apenas às essenciais, como as portas TCP/IP do **Modbus** e aquelas necessárias para a interface de supervisão e controle remoto. 
+
+- **Configuração de DNS Personalizado para o Sistema Supervisório,** facilitando o acesso ao MangoOS por meio de um domínio amigável, como `supervisorio.empresa.com`. Além disso, a criação de certificados SSL também poderia ser feita visando aumentar ainda mais a segurança das conexões.
+
+- **Implementação de Logs de Eventos e Auditoria,** permitindo o rastreamento e armazenamento das atividades do sistema, como comandos executados e alterações de parâmetros, facilitando a identificação de problemas e a realização de auditorias de segurança e operacionais.
 
 ### Referências
 1. https://www.wevolver.com/article/modbus-tcp-ip#modbus-tcp/ip:-basic-concepts-and-principles
