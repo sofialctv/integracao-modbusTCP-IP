@@ -1,0 +1,67 @@
+#include "beremiz.h"
+#ifndef __POUS_H
+#define __POUS_H
+
+#include "accessor.h"
+#include "iec_std_lib.h"
+
+__DECLARE_ENUMERATED_TYPE(LOGLEVEL,
+  LOGLEVEL__CRITICAL,
+  LOGLEVEL__WARNING,
+  LOGLEVEL__INFO,
+  LOGLEVEL__DEBUG
+)
+// FUNCTION_BLOCK LOGGER
+// Data part
+typedef struct {
+  // FB Interface - IN, OUT, IN_OUT variables
+  __DECLARE_VAR(BOOL,EN)
+  __DECLARE_VAR(BOOL,ENO)
+  __DECLARE_VAR(BOOL,TRIG)
+  __DECLARE_VAR(STRING,MSG)
+  __DECLARE_VAR(LOGLEVEL,LEVEL)
+
+  // FB private variables - TEMP, private and located variables
+  __DECLARE_VAR(BOOL,TRIG0)
+
+} LOGGER;
+
+void LOGGER_init__(LOGGER *data__, BOOL retain);
+// Code part
+void LOGGER_body__(LOGGER *data__);
+// PROGRAM PLANTA
+// Data part
+typedef struct {
+  // PROGRAM Interface - IN, OUT, IN_OUT variables
+
+  // PROGRAM private variables - TEMP, private and located variables
+  __DECLARE_VAR(UINT,SP)
+  __DECLARE_VAR(UINT,PV)
+  __DECLARE_VAR(UINT,CV)
+  __DECLARE_VAR(REAL,ITERM)
+  __DECLARE_VAR(REAL,ERROR)
+  __DECLARE_VAR(UINT,KP)
+  __DECLARE_VAR(UINT,KI)
+  __DECLARE_VAR(BOOL,R1)
+  INTEGRAL INTEGRAL0;
+  __DECLARE_VAR(REAL,_TMP_UINT_TO_REAL5_OUT)
+  __DECLARE_VAR(REAL,_TMP_DIV6_OUT)
+  __DECLARE_VAR(REAL,_TMP_ADD7_OUT)
+  __DECLARE_VAR(REAL,_TMP_UINT_TO_REAL21_OUT)
+  __DECLARE_VAR(REAL,_TMP_MUL9_OUT)
+  __DECLARE_VAR(UINT,_TMP_REAL_TO_UINT10_OUT)
+  __DECLARE_VAR(REAL,_TMP_UINT_TO_REAL17_OUT)
+  __DECLARE_VAR(REAL,_TMP_UINT_TO_REAL16_OUT)
+  __DECLARE_VAR(REAL,_TMP_SUB18_OUT)
+  __DECLARE_VAR(REAL,_TMP_UINT_TO_REAL23_OUT)
+  __DECLARE_VAR(REAL,_TMP_UINT_TO_REAL28_OUT)
+  __DECLARE_VAR(REAL,_TMP_UINT_TO_REAL29_OUT)
+  __DECLARE_VAR(REAL,_TMP_DIV25_OUT)
+  __DECLARE_VAR(TIME,_TMP_REAL_TO_TIME24_OUT)
+
+} PLANTA;
+
+void PLANTA_init__(PLANTA *data__, BOOL retain);
+// Code part
+void PLANTA_body__(PLANTA *data__);
+#endif //__POUS_H
